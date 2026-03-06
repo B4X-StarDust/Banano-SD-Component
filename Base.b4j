@@ -134,7 +134,7 @@ Sub AppStart (Form1 As Form, Args() As String)
 	
 	' -------------------------- IMPORTANT -------------------------
 	SDfunc.Initialize(BANano)
-	SDfunc.InitializeGmap("AIzaSyCFYoy0NOKz_4hIWw-ISRBSusb6obUWQ70") ' if use gmap
+	SDfunc.InitializeGmap("") ' if use gmap
 	SDfunc.InitializeThreeD ' if use 3D
 	
 	' some directives for the Tranpiler
@@ -224,3 +224,4 @@ Sub BANano_Ready()
 	classPage5.Initialize(BANano)
 	classPage6.Initialize(BANano)
 End Sub
+
