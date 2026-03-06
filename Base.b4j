@@ -1,0 +1,226 @@
+﻿AppType=JavaFX
+Build1=Default,b4j.example
+File1=bimbo.jpg
+File10=MainLayout6.bjl
+File11=MainPage.bjl
+File2=dolphin_small3.obj
+File3=favicon.ico
+File4=item.bjl
+File5=MainLayout1.bjl
+File6=MainLayout2.bjl
+File7=MainLayout3.bjl
+File8=MainLayout4.bjl
+File9=MainLayout5.bjl
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+FileGroup9=Default Group
+Group=Default Group
+Library1=banano
+Library2=jcore
+Library3=jfx
+Module1=BananoSDorderMap
+Module10=SDcalendar
+Module11=SDcarousel
+Module12=SDClock
+Module13=SDcol
+Module14=SDcombo
+Module15=SDcontainer
+Module16=SDdatepicker
+Module17=SDfunc
+Module18=SDgoogleMap
+Module19=SDgrid
+Module2=Page1
+Module20=SDicon
+Module21=SDimage
+Module22=SDinput
+Module23=SDlabel
+Module24=SDlink
+Module25=SDlist
+Module26=SDmenuHoriz
+Module27=SDpanel
+Module28=SDplanning
+Module29=SDplate
+Module3=Page2
+Module30=SDrangebar
+Module31=SDrow
+Module32=SDscrollHoriz
+Module33=SDseekbar
+Module34=SDselect
+Module35=SDsidebar
+Module36=SDstat
+Module37=SDstepper
+Module38=SDswitch
+Module39=SDthree
+Module4=Page3
+Module40=SDtimepicker
+Module41=SDvideo
+Module42=SDwordEditor
+Module5=Page4
+Module6=Page5
+Module7=Page6
+Module8=pageHome
+Module9=SDbutton
+NumberOfFiles=11
+NumberOfLibraries=3
+NumberOfModules=42
+Version=10.3
+@EndOfDesignText@
+#Region Project Attributes 
+	#MainFormWidth: 600
+	#MainFormHeight: 600 
+	#IgnoreWarnings: 16, 10, 14, 15		
+#End Region
+
+#JavaCompilerPath: 19, C:\Program Files\Java\jdk-19.0.2\bin\javac.exe
+'#JavaCompilerPath: 14, C:\Program Files\Java\jdk-14.0.1\bin\javac.exe
+'#JavaCompilerPath: 11, C:\Program Files\Java\jdk-11.0.1\bin\javac.exe
+
+' Rel 1.02 SDClock
+' Rel 1.03 SDlink
+' Rel 2.00 SDfunc.Display
+' Rel 2.01 SDVideo, SDlink
+' Rel 2.02 SDMenuHoriz (upadate)
+
+Sub Process_Globals
+	Private fx As JFX
+	Public AppName As String = "BANanoSDcomponent"
+	Public AppTitle As String = "BANanoSDcomponent"
+	Private Publish As String = "C:\laragon\www"
+	Public Version As String = "1.01"
+	Public ServerIP As String = "http://localhost/"
+	
+	Private BANano As BANano 'ignore
+	Private HomePage As pageHome
+	Public classPage1 As Page1
+	Public classPage2 As Page2
+	Public classPage3 As Page3
+	Public classPage4 As Page4
+	Public classPage5 As Page5
+	Public classPage6 As Page6
+	' from the MainLayout
+	'Private MainPageHolder As SKContainer 'ignore	
+End Sub
+
+Sub AppStart (Form1 As Form, Args() As String)
+
+	#if Debug
+		Log("BANanoLOGS")
+	#End if
+		
+	' some general settings like the name of your PWA
+	BANano.Initialize("BANano", AppName,DateTime.Now)
+	BANano.Header.Title=AppTitle
+	' DateTime.Now is to make sure our app is reloaded on ReBuild
+	BANano.JAVASCRIPT_NAME = "app" & DateTime.Now & ".js"
+	' a PWA must have a service worker.  Will be build automatically caching everything used in your Web App
+	BANano.SERVICEWORKER_NAME = "service-worker.js"
+
+	BANano.Header.Author ="Star-Dust"
+	'BANano.Header.Charset = "iso-8859-1"
+	BANano.Header.Description = "Software Development"
+	'BANano.header.Expires = "Mon, 22 Jul 2002 11:12:01 GMT"
+	BANano.Header.Keywords = "Software,mobile,desktop,ios,android"
+	BANano.Header.Language = "it"
+	BANano.Header.AddMeta($"<meta name="copyright" content="&copy; 2020 BVAD3">"$)
+	BANano.Header.AddMeta($"<meta name="robots" content="ALL">"$)
+	
+	' -------------------------- IMPORTANT -------------------------
+	SDfunc.Initialize(BANano)
+	SDfunc.InitializeGmap("AIzaSyCFYoy0NOKz_4hIWw-ISRBSusb6obUWQ70") ' if use gmap
+	SDfunc.InitializeThreeD ' if use 3D
+	
+	' some directives for the Tranpiler
+	BANano.TranspilerOptions.MergeAllCSSFiles = True
+	BANano.TranspilerOptions.MergeAllJavascriptFiles = True
+	BANano.TranspilerOptions.RemoveDeadCode = True
+	BANano.TranspilerOptions.ShowWarningDeadCode = True
+	BANano.TranspilerOptions.EnableLiveCodeSwapping = True
+	
+	' this line makes sure our Web App becomes a PWA
+	#if Release
+	BANano.TranspilerOptions.UseServiceWorkerWithUpdateMessage(True, "#26AE60", "Update available", "Click here to update the app to the latest version")
+	#end if	
+	
+	' optional: if your WebApp is not in the root
+	' BANano.TranspilerOptions.SetPWAStartUrl("myPWA/index.html")
+	BANano.Header.BackgroundColor = "#1e1e1e"
+
+	' additonal JavaScript and CSS files we want to include
+	' BANano.Header.AddJavascriptFile("jsstore.min.js")
+
+	' settings needed for the PWA app icons, splash screens, etc…
+	BANano.Header.AddMSTileIcon("mstile-150x150.png", "150x150")
+	BANano.Header.MSTileColor = "#ffc40d"
+	
+	BANano.Header.AddManifestIcon("android-chrome-192x192.png", "192x192")
+	BANano.Header.AddManifestIcon("android-chrome-512x512.png", "512x512")
+	BANano.Header.SetAndroidMaskIcon("maskable_icon.png", "731x731")
+	BANano.Header.MaskIconColor = "#1e1e1e"
+	
+	BANano.Header.AddAppleTouchIcon("apple-touch-icon.png", "")
+	BANano.Header.SetAppleMaskIcon("safari.png")
+	BANano.Header.AddAppleTouchStartupImage("iphone5_splash.png", "320px", "568px", "2")
+	BANano.Header.AddAppleTouchStartupImage("iphone6_splash.png", "375px", "667px", "2")
+	BANano.Header.AddAppleTouchStartupImage("iphoneplus_splash.png", "621px", "1104px", "3")
+	BANano.Header.AddAppleTouchStartupImage("iphonex_splash.png", "375px", "812px", "3")
+	BANano.Header.AddAppleTouchStartupImage("iphonexr_splash.png", "414px", "896px", "2")
+	BANano.Header.AddAppleTouchStartupImage("iphonexsmax_splash.png", "414px", "896px", "3")
+	BANano.Header.AddAppleTouchStartupImage("ipad_splash.png", "768px", "1024px", "2")
+	BANano.Header.AddAppleTouchStartupImage("ipadpro1_splash.png", "834px", "1112px", "2")
+	BANano.Header.AddAppleTouchStartupImage("ipadpro2_splash.png", "834px", "1194px", "2")
+	BANano.Header.AddAppleTouchStartupImage("ipadpro3_splash.png", "1024px", "1366px", "2")
+		
+	BANano.Header.AddFavicon("favicon-16x16.png", "16x16")
+	BANano.Header.AddFavicon("favicon-32x32.png", "32x32")
+		
+	
+	' php
+	BANano.PHP_NAME = $"${AppName}.php"$
+	BANano.PHPHost = $"${ServerIP}/"$
+	BANano.PHPAddHeader("Access-Control-Allow-Origin: *")
+	
+	' start the actual build
+	BANano.Build(Publish)
+	
+	#if Release
+		fx.ShowExternalDocument($"${ServerIP}/index.html"$)
+		'BANano.BuildAsB4Xlib(Version)
+	#Else
+		fx.ShowExternalDocument($"${ServerIP}/${AppName}/index.html"$)
+	#End if
+	Log("Completed " & DateTime.Time(DateTime.now))
+	ExitApplication
+End Sub
+
+'Return true to allow the default exceptions handler to handle the uncaught exception.
+Sub Application_Error (Error As Exception, StackTrace As String) As Boolean
+	Return True
+End Sub
+
+' HERE STARTS YOUR APP
+Sub BANano_Ready()
+	' Initialize your local browser database
+	' SQL.OpenWait("SQL", "MyDB")
+	' SQL.ExecuteWait("CREATE TABLE IF NOT EXISTS tTable (tblid INT, tblcode STRING, tbldesc STRING)", Null)
+	Private body As BANanoElement
+	body.Initialize("#body")
+	SDfunc.ConfigBody(body) ' Important
+	
+	HomePage.Initialize(BANano)
+	HomePage.Show
+	
+	classPage1.Initialize(BANano)
+	classPage2.Initialize(BANano)
+	classPage3.Initialize(BANano)
+	classPage4.Initialize(BANano)
+	classPage5.Initialize(BANano)
+	classPage6.Initialize(BANano)
+End Sub
